@@ -4,6 +4,7 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\TeacherResource\Pages;
 use App\Filament\Resources\TeacherResource\RelationManagers;
+use App\Filament\Resources\TeacherResource\RelationManagers\ClassroomRelationManager;
 use App\Models\Teacher;
 use Filament\Forms;
 use Filament\Forms\Components\Card;
@@ -28,7 +29,7 @@ class TeacherResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-user-plus';
     protected static ?string $navigationLabel = 'Teacher';
     protected static ?string $navigationGroup = 'Master Data';
-    protected static ?int $navigationSort = 3;
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {
@@ -88,7 +89,8 @@ class TeacherResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // Suggested code may be subject to a license. Learn more: ~LicenseLog:937527836.
+            ClassroomRelationManager::class,
         ];
     }
 
