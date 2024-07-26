@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('student_has_classes', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('students_id');
-            // Suggested code may be subject to a license. Learn more: ~LicenseLog:2964023843.
             $table->unsignedBigInteger('homerooms_id');
             $table->unsignedBigInteger('periode_id');
             $table->boolean('is_open')->default(1);
