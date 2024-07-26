@@ -93,7 +93,11 @@ class StudentResource extends Resource
                 Tables\Actions\BulkActionGroup::make([
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ]);
+            ])
+            // ->headerActions([
+            //     Tables\Actions\CreateAction::make(),
+            // ])
+        ;
     }
 
     public static function getRelations(): array
