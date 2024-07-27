@@ -23,7 +23,7 @@ class StudentHasClassResource extends Resource
 {
     protected static ?string $model = StudentHasClass::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-pause-circle';
+    protected static ?string $navigationIcon = 'heroicon-o-user-circle';
     protected static ?string $navigationLabel = 'Student Has Class';
     protected static ?string $navigationGroup = 'Academic';
     protected static ?int $navigationSort = 2;
