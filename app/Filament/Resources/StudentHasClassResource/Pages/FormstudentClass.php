@@ -45,7 +45,7 @@ class FormstudentClass extends Page implements HasForms
                         ->label('Class'),
                     Select::make('periode')
                         ->options(Periode::all()->pluck('name', 'id'))
-                        ->label('Class'),
+                        ->label('Periode'),
                 ])
                 ->columns(3)
         ];

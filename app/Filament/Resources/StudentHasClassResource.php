@@ -32,20 +32,7 @@ class StudentHasClassResource extends Resource
     {
         return $form
             ->schema([
-                Card::make([
-                    Select::make('students_id')
-                        ->searchable()
-                        ->options(Student::all()->pluck('name', 'id'))
-                        ->label('Student'),
-                    Select::make('homerooms_id')
-                        ->searchable()
-                        ->options(HomeRoom::all()->pluck('classroom.name', 'id'))
-                        ->label('Class'),
-                    Select::make('periode_id')
-                        ->searchable()
-                        ->options(Periode::all()->pluck('name', 'id'))
-                        ->label('Periode'),
-                ])->columns(3),
+                //    
             ]);
     }
 
