@@ -14,15 +14,13 @@ return new class extends Migration
         Schema::create('students', function (Blueprint $table) {
             $table->id();
             $table->string('nis')->nullable();
-            // Suggested code may be subject to a license. Learn more: ~LicenseLog:1063140403.
             $table->string('name');
-            // Suggested code may be subject to a license. Learn more: ~LicenseLog:2028969416.
             $table->enum('gender', ['Male', 'Female'])->default('Male');
             $table->date('birthday')->nullable();
-            // Suggested code may be subject to a license. Learn more: ~LicenseLog:1664644044.
             $table->enum('religion', ['Islam', 'Katolik', 'Protestan', 'Hindu', 'Budha', 'Khonghucu']);
             $table->string('contact')->nullable();
             $table->string('profile')->nullable();
+            $table->enum('status', ['accept', 'off', 'move', 'grade'])->default('off');
             $table->timestamps();
         });
     }

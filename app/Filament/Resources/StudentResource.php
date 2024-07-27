@@ -10,7 +10,9 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
+use Illuminate\Support\Collection;
 use Filament\Forms\Components\Select;
+use Filament\Tables\Actions\BulkAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
 use Filament\Forms\Components\TextInput;
@@ -84,6 +86,8 @@ class StudentResource extends Resource
                 TextColumn::make('birthday'),
                 TextColumn::make('religion'),
                 TextColumn::make('contact'),
+                TextColumn::make('status')
+                    ->formatStateUsing(fn (string $state): string => ucwords("{$state}")),
             ])
             ->filters([
                 //
@@ -94,6 +98,23 @@ class StudentResource extends Resource
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
+                    BulkAction::make('Accept')
+                        ->icon('heroicon-m-check')
+                        ->requiresConfirmation()
+                        ->color('success')
+                        ->action(function (Collection $records) {
+                            return $records->each->update(['status' => 'accept']);
+                        }),
+                    BulkAction::make('Off')
+                        ->icon('heroicon-m-x-circle')
+                        ->requiresConfirmation()
+                        ->color('warning')
+                        ->action(function (Collection $records) {
+                            return $records->each(function ($record) {
+                                $id = $record->id;
+                                Student::query()->where('id', '=', $id)->update(['status' => 'off']);
+                            });
+                        }),
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
