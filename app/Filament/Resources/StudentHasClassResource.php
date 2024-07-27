@@ -23,10 +23,10 @@ class StudentHasClassResource extends Resource
 {
     protected static ?string $model = StudentHasClass::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-users';
+    protected static ?string $navigationIcon = 'heroicon-o-pause-circle';
     protected static ?string $navigationLabel = 'Student Has Class';
-    protected static ?string $navigationGroup = 'Master Data';
-    protected static ?int $navigationSort = 7;
+    protected static ?string $navigationGroup = 'Academic';
+    protected static ?int $navigationSort = 2;
 
     public static function form(Form $form): Form
     {

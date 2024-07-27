@@ -25,8 +25,8 @@ class ClassroomResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-home-modern';
     protected static ?string $navigationLabel = 'Classroom';
-    protected static ?string $navigationGroup = 'Master Data';
-    protected static ?int $navigationSort = 4;
+    protected static ?string $navigationGroup = 'Source';
+    protected static ?int $navigationSort = 5;
 
     public static function form(Form $form): Form
     {

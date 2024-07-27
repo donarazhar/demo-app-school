@@ -19,11 +19,10 @@ class PeriodeResource extends Resource
 {
     protected static ?string $model = Periode::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-calendar';
-    // Suggested code may be subject to a license. Learn more: ~LicenseLog:1662174923.
+    protected static ?string $navigationIcon = 'heroicon-o-swatch';
     protected static ?string $navigationLabel = 'Periode';
-    protected static ?string $navigationGroup = 'Master Data';
-    protected static ?int $navigationSort = 2;
+    protected static ?string $navigationGroup = 'Setting';
+    protected static ?int $navigationSort = 7;
 
     public static function form(Form $form): Form
     {

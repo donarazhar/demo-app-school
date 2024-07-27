@@ -28,8 +28,8 @@ class TeacherResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-plus';
     protected static ?string $navigationLabel = 'Teacher';
-    protected static ?string $navigationGroup = 'Master Data';
-    protected static ?int $navigationSort = 5;
+    protected static ?string $navigationGroup = 'Academic';
+    protected static ?int $navigationSort = 1;
 
     public static function form(Form $form): Form
     {

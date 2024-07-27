@@ -25,8 +25,8 @@ class CategoryNilaiResource extends Resource
     protected static ?string $navigationIcon = 'heroicon-o-code-bracket-square';
     // Suggested code may be subject to a license. Learn more: ~LicenseLog:2878530748.
     protected static ?string $navigationLabel = 'Category Nilai';
-    protected static ?string $navigationGroup = 'Master Data';
-    protected static ?int $navigationSort = 1;
+    protected static ?string $navigationGroup = 'Source';
+    protected static ?int $navigationSort = 4;
 
     public static function form(Form $form): Form
     {
