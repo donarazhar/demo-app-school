@@ -2,24 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\StudentResource\Pages;
-use App\Filament\Resources\StudentResource\RelationManagers;
-use App\Models\Student;
+use stdClass;
 use Filament\Forms;
-use Filament\Forms\Components\DatePicker;
-use Filament\Forms\Components\FileUpload;
-use Filament\Forms\Components\Select;
-use Filament\Forms\Components\TextInput;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
-use Filament\Tables\Columns\ImageColumn;
+use App\Models\Student;
+use Filament\Forms\Form;
+use Filament\Tables\Table;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
+use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Contracts\HasTable;
-use Filament\Tables\Table;
+use Filament\Forms\Components\TextInput;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\FileUpload;
 use Illuminate\Database\Eloquent\Builder;
+use Filament\Infolists\Components\TextEntry;
+use App\Filament\Resources\StudentResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use stdClass;
+use App\Filament\Resources\StudentResource\RelationManagers;
 
 class StudentResource extends Resource
 {
@@ -87,6 +89,7 @@ class StudentResource extends Resource
                 //
             ])
             ->actions([
+                Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
             ])
             ->bulkActions([
@@ -94,6 +97,7 @@ class StudentResource extends Resource
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
             ])
+
             // ->headerActions([
             //     Tables\Actions\CreateAction::make(),
             // ])
@@ -111,8 +115,18 @@ class StudentResource extends Resource
     {
         return [
             'index' => Pages\ListStudents::route('/'),
-            // 'create' => Pages\CreateStudent::route('/create'),
-            // 'edit' => Pages\EditStudent::route('/{record}/edit'),
+            'create' => Pages\CreateStudent::route('/create'),
+            'edit' => Pages\EditStudent::route('/{record}/edit'),
+            'view' => Pages\ViewStudent::route('/{record}'),
         ];
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+    {
+        return $infolist
+            ->schema([
+                TextEntry::make('nis'),
+                TextEntry::make('name'),
+            ]);
     }
 }
