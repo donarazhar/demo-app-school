@@ -2,66 +2,71 @@
 
 namespace App\Filament\Resources;
 
-use stdClass;
-use Filament\Forms;
-use Filament\Tables;
+use App\Filament\Resources\StudentResource\Pages;
 use App\Models\Student;
-use Filament\Forms\Form;
-use Filament\Tables\Table;
-use Filament\Infolists\Infolist;
-use Filament\Resources\Resource;
-use Illuminate\Support\Collection;
-use Filament\Forms\Components\Select;
-use Filament\Tables\Actions\BulkAction;
-use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Contracts\HasTable;
-use Filament\Forms\Components\TextInput;
-use Filament\Tables\Columns\ImageColumn;
+use Filament\Forms\Components\Card;
 use Filament\Forms\Components\DatePicker;
 use Filament\Forms\Components\FileUpload;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\TextInput;
+use Filament\Forms\Form;
+use Filament\Infolists\Components;
+use Filament\Infolists\Components\Fieldset;
+use Filament\Infolists\Infolist;
+use Filament\Resources\Resource;
+use Filament\Tables;
+use Filament\Tables\Actions\BulkAction;
+use Filament\Tables\Columns\ImageColumn;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Contracts\HasTable;
 use Filament\Tables\Filters\SelectFilter;
-use Illuminate\Database\Eloquent\Builder;
-use Filament\Infolists\Components\TextEntry;
-use App\Filament\Resources\StudentResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\StudentResource\RelationManagers;
+use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Collection;
+use stdClass;
 
 class StudentResource extends Resource
 {
     protected static ?string $model = Student::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-academic-cap';
-    protected static ?string $navigationLabel = 'Student';
+    protected static ?string $navigationIcon = 'heroicon-o-users';
+
     protected static ?string $navigationGroup = 'Academic';
-    protected static ?int $navigationSort = 3;
+
+    protected static ?string $navigationLabel = 'Students';
+
+    protected static ?int $navigationSort = 21;
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                // Suggested code may be subject to a license. Learn more: ~LicenseLog:2089209060.
-                TextInput::make('nis')
-                    ->numeric(),
-                TextInput::make('name'),
-                Select::make('gender')
-                    ->options([
-                        'Male' => 'Male',
-                        'Female' => 'Female',
-                    ]),
-                DatePicker::make('birthday'),
-                Select::make('religion')
-                    ->options([
-                        'Islam' => 'Islam',
-                        'Katolik' => 'Katolik',
-                        'Protestan' => 'Protestan',
-                        'Hindu' => 'Hindu',
-                        'Budha' => 'Budha',
-                        'Khonghucu' => 'Khonghucu',
-                    ]),
-                TextInput::make('contact'),
-                FileUpload::make('profile')
-                    ->directory('file-student')
-
+                Card::make()
+                    ->schema([
+                        TextInput::make('nis')
+                            ->label('NIS'),
+                        TextInput::make('name')
+                            ->label('Nama Student')
+                            ->required(),
+                        Select::make('gender')
+                            ->options([
+                                "Male" => "Male",
+                                "Female" => "Female"
+                            ]),
+                        DatePicker::make('birthday')
+                            ->label("Birthday"),
+                        Select::make('religion')
+                            ->options([
+                                'Islam' => "Islam",
+                                'Katolik' => "Katolik",
+                                'Protestan' => "Protestan",
+                                'Hindu' => 'Hindu',
+                                'Buddha' => "Buddha",
+                                'Khonghucu' => "Khonghucu"
+                            ]),
+                        TextInput::make('contact'),
+                        FileUpload::make('profile')
+                            ->directory("students")
+                    ])
             ]);
     }
 
@@ -69,28 +74,31 @@ class StudentResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('No.')->state(
+                TextColumn::make('no')->state(
                     static function (HasTable $livewire, stdClass $rowLoop): string {
-                        return (string) (
-                            $rowLoop->iteration +
-                            ($livewire->getTableRecordsPerPage() * (
-                                $livewire->getTablePage() - 1
+                        return (string) ($rowLoop->iteration +
+                            ($livewire->getTableRecordsPerPage() * ($livewire->getTablePage() - 1
                             ))
                         );
                     }
                 ),
-                ImageColumn::make('profile')
-                    ->circular(),
-                TextColumn::make('nis'),
-                TextColumn::make('name'),
+                TextColumn::make('nis')
+                    ->label('NIS')
+                    ->searchable(),
+                TextColumn::make('name')
+                    ->label('Nama Student')
+                    ->searchable(),
+                TextColumn::make('gender'),
+                TextColumn::make('birthday')
+                    ->label("Birthday")
+                    ->toggleable(isToggledHiddenByDefault: true),
                 TextColumn::make('gender')
                     ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('birthday')
-                    ->toggleable(isToggledHiddenByDefault: true),
-                TextColumn::make('religion'),
                 TextColumn::make('contact'),
+                ImageColumn::make('profile')->circular(),
                 TextColumn::make('status')
-                    ->formatStateUsing(fn (string $state): string => ucwords("{$state}")),
+                    ->toggleable(isToggledHiddenByDefault: true)
+                    ->formatStateUsing(fn (string $state): string => ucwords("{$state}"))
             ])
             ->filters([
                 SelectFilter::make('status')
@@ -99,8 +107,8 @@ class StudentResource extends Resource
                         'accept' => 'Accept',
                         'off' => 'Off',
                         'move' => 'Move',
-                        'grade' => 'Grade',
-                    ]),
+                        'grade' => 'Grade'
+                    ])
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
@@ -109,7 +117,7 @@ class StudentResource extends Resource
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
                     BulkAction::make('Change Status')
-                        ->icon('heroicon-o-check')
+                        ->icon('heroicon-m-check')
                         ->requiresConfirmation()
                         ->form([
                             Select::make('Status')
@@ -119,17 +127,20 @@ class StudentResource extends Resource
                         ])
                         ->action(function (Collection $records, array $data) {
                             $records->each(function ($record) use ($data) {
-                                Student::where('id', $record->id)->update(['status' =>  $data['Status']]);
+                                Student::where('id', $record->id)->update(['status' => $data['Status']]);
                             });
                         }),
+
                     Tables\Actions\DeleteBulkAction::make(),
                 ]),
-            ])
 
+            ])
             // ->headerActions([
             //     Tables\Actions\CreateAction::make(),
             // ])
-        ;
+            ->emptyStateActions([
+                Tables\Actions\CreateAction::make(),
+            ]);
     }
 
     public static function getRelations(): array
@@ -145,16 +156,66 @@ class StudentResource extends Resource
             'index' => Pages\ListStudents::route('/'),
             'create' => Pages\CreateStudent::route('/create'),
             'edit' => Pages\EditStudent::route('/{record}/edit'),
-            'view' => Pages\ViewStudent::route('/{record}'),
+            'view' => Pages\ViewStudent::route('/{record}')
         ];
+    }
+
+    public static function getLabel(): ?string
+    {
+        $locale = app()->getLocale();
+
+        if ($locale == 'id') {
+            return "Murid";
+        } else
+            return "Students";
     }
 
     public static function infolist(Infolist $infolist): Infolist
     {
         return $infolist
             ->schema([
-                TextEntry::make('nis'),
-                TextEntry::make('name'),
+                Components\Section::make()
+                    ->schema([
+                        Fieldset::make('Biodata')
+                            ->schema([
+                                Components\Split::make([
+                                    Components\ImageEntry::make('profile')
+                                        ->hiddenLabel()
+                                        ->grow(false),
+                                    Components\Grid::make(2)
+                                        ->schema([
+                                            Components\Group::make([
+                                                Components\TextEntry::make('nis'),
+                                                Components\TextEntry::make('name'),
+                                                Components\TextEntry::make('gender'),
+                                                Components\TextEntry::make('birthday'),
+
+                                            ])
+                                                ->inlineLabel()
+                                                ->columns(1),
+
+                                            Components\Group::make([
+                                                Components\TextEntry::make('religion'),
+                                                Components\TextEntry::make('contact'),
+                                                Components\TextEntry::make('status')
+                                                    ->badge()
+                                                    ->color(fn (string $state): string => match ($state) {
+                                                        'accept' => 'success',
+                                                        'off' => 'danger',
+                                                        'grade' => 'success',
+                                                        'move' => 'warning',
+                                                        'wait' => 'gray'
+                                                    }),
+                                                Components\ViewEntry::make('QR Code')
+                                                    ->view('filament.resources.students.qrcode'),
+                                            ])
+                                                ->inlineLabel()
+                                                ->columns(1),
+                                        ])
+
+                                ])->from('lg')
+                            ])->columns(1)
+                    ])->columns(2)
             ]);
     }
 }

@@ -14,7 +14,7 @@
     });
 
     function makeCode() {
-        var elText = "halo";
+        var elText = {{ $getRecord()->nis }};
         qrcode.makeCode(elText);
     }
     makeCode();

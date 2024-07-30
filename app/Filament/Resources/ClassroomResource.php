@@ -2,22 +2,16 @@
 
 namespace App\Filament\Resources;
 
-use Filament\Forms;
+use App\Filament\Resources\ClassroomResource\RelationManagers\SubjectsRelationManager;
 use Filament\Tables;
-use App\Models\Periode;
-use App\Models\Teacher;
 use Filament\Forms\Form;
 use App\Models\Classroom;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
-use Filament\Forms\Components\Select;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Forms\Components\TextInput;
-use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\ClassroomResource\Pages;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\ClassroomResource\RelationManagers;
 
 class ClassroomResource extends Resource
 {
@@ -39,7 +33,6 @@ class ClassroomResource extends Resource
                     })
                     ->required()
                     ->maxLength(255),
-                // Suggested code may be subject to a license. Learn more: ~LicenseLog:82809410.
                 TextInput::make('slug')
                     ->required()
                     ->maxLength(255),
@@ -70,7 +63,7 @@ class ClassroomResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            SubjectsRelationManager::class,
         ];
     }
 
